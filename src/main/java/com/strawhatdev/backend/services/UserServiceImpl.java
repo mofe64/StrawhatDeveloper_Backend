@@ -11,19 +11,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service(value = "userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -55,15 +57,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void registerUser(UserDto userDetails) throws UserException {
-        User user = UserDto.unpackDto(userDetails);
-        boolean usernameExists = doesUsernameExist(user.getUsername());
-        boolean emailExists = doesEmailExist(user.getEmail());
+        boolean usernameExists = doesUsernameExist(userDetails.getUsername());
+        boolean emailExists = doesEmailExist(userDetails.getEmail());
         if (usernameExists) {
-            throw new UserException(String.format("This username already exists %s", user.getUsername()));
+            throw new UserException(String.format("This username already exists %s", userDetails.getUsername()));
         }
         if (emailExists) {
-            throw new UserException(String.format("This email already exists %s", user.getEmail()));
+            throw new UserException(String.format("This email already exists %s", userDetails.getEmail()));
         }
+        User user = UserDto.unpackDto(userDetails);
         user.getRoles().add(Role.ADMIN);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         saveUser(user);

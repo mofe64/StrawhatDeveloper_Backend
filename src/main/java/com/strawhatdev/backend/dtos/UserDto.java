@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,10 +18,20 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserDto {
     private String id;
+    @NotNull
     private String username;
+    @NotNull
+    @NotBlank(message = "firstname field cannot be empty")
+    @Size(min = 2, message = "Firstname cannot be less than 2 characters")
     private String firstname;
+    @NotNull
+    @NotBlank(message = "lastname field cannot be empty")
+    @Size(min = 2, message = "lastname cannot be less than 2 characters")
     private String lastname;
+    @Email(message = "Please provide a valid email")
     private String email;
+    @NotNull
+    @NotBlank
     private String password;
 
     public static User unpackDto(UserDto userDto) {

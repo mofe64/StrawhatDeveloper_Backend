@@ -21,5 +21,5 @@ public class User {
     private String lastname;
     private String email;
     private String password;
-    private final Set<Role>roles =new HashSet<>();
+    private Set<Role>roles = new HashSet<>();
 }

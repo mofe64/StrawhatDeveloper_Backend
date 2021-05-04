@@ -1,6 +1,7 @@
 package com.strawhatdev.backend.services;
 
 import com.strawhatdev.backend.dtos.PostDto;
+import com.strawhatdev.backend.exceptions.CategoryException;
 import com.strawhatdev.backend.exceptions.PostException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -13,14 +14,15 @@ import java.util.List;
 public interface PostService {
     PostDto getPostById(String id) throws PostException;
     PostDto getPostBySlug(String slug) throws PostException;
+    PostDto findPostByTitle(String title) throws PostException;
     void createPost(PostDto postDto);
-    Slice<PostDto> getAllPosts(Pageable pageable);
-    Slice<PostDto> search(String searchPhrase, Pageable pageable);
-    void updatePost(String postId, PostDto postDto);
-    void deletePost(String postId);
-    Slice<PostDto> getAllPostsBefore(LocalDate date, Pageable pageable);
-    Slice<PostDto> getAllPostsAfter(LocalDate date, Pageable pageable);
-    Slice<PostDto> getAllPostsInACategory(String categoryName, Pageable pageable);
+    List<PostDto> getAllPosts(int PageNumber);
+    List<PostDto> search(String searchPhrase, int pageNumber);
+    void updatePost(String postId, PostDto postDto) throws PostException;
+    void deletePost(String postId) throws PostException;
+    List<PostDto> getAllPostsBefore(LocalDate date, int pageNumber);
+    List<PostDto> getAllPostsAfter(LocalDate date, int pageNumber);
+    List<PostDto> getAllPostsInACategory(String categoryName, int pageNumber) throws CategoryException;
 
 
 }

@@ -23,6 +23,9 @@ public class PostDto {
     private boolean isFeatured;
     private LocalDate publishDate;
     @NotNull
+    @NotBlank(message = "Cover Image field cannot be empty")
+    private String coverImage;
+    @NotNull
     @NotBlank(message = "body field cannot be empty")
     private String body;
     @NotNull

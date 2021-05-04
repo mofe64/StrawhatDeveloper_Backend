@@ -60,8 +60,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void createPost(PostDto postDto) {
-        savePost(PostDto.unpackDto(postDto));
+    public void createPost(PostDto postDto) throws CategoryException {
+        Post newPost = PostDto.unpackDto(postDto);
+        newPost.setPublishDate(LocalDate.now());
+        newPost.setCategory(categoryService.getCategoryByName(postDto.getCategoryName()));
+        savePost(newPost);
     }
 
     private void savePost(Post post) {

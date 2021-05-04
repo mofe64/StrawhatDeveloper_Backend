@@ -15,7 +15,7 @@ public interface PostService {
     PostDto getPostById(String id) throws PostException;
     PostDto getPostBySlug(String slug) throws PostException;
     PostDto findPostByTitle(String title) throws PostException;
-    void createPost(PostDto postDto);
+    void createPost(PostDto postDto) throws CategoryException;
     List<PostDto> getAllPosts(int PageNumber);
     List<PostDto> search(String searchPhrase, int pageNumber);
     void updatePost(String postId, PostDto postDto) throws PostException;
